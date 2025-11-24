@@ -1,0 +1,93 @@
+package ui;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Font;
+import controllers.GameController;
+
+
+public class GameWindow extends JFrame {
+    private static final int DEFAULT_WIDTH = 512;
+    private static final int DEFAULT_HEIGHT = 512;
+    
+    private GameController gameController;
+    private int windowWidth;
+    private int windowHeight;
+    private BackgroundPanel menuPanel;
+    private GamePanel gamePanel;
+    
+    public GameWindow() {
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+    
+    public GameWindow(int width, int height) {
+        this.windowWidth = width;
+        this.windowHeight = height;
+        initializeWindow();
+        initializeComponents();
+    }
+    
+    /**
+     * Khởi tạo cấu hình cơ bản của cửa sổ
+     */
+    private void initializeWindow() {
+        setTitle("Escape from OOP");
+        setSize(windowWidth, windowHeight);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        setLocationRelativeTo(null); // Center window
+        
+        // Tạo menu panel (màn hình chính)
+        menuPanel = new BackgroundPanel("resources/backGround.png");
+        menuPanel.setBounds(0, 0, windowWidth, windowHeight);
+        
+        // Tạo game panel (màn hình chơi game)
+        // gamePanel = new GamePanel();
+        // gamePanel.setBounds(0, 0, windowWidth, windowHeight);
+        
+        // Bắt đầu với menu panel
+        setContentPane(menuPanel);
+    }
+    
+    /**
+     * Khởi tạo các component trong cửa sổ
+     */
+    private void initializeComponents() {
+        gameController = new GameController(this);
+        
+        // Label hiển thị tọa độ chuột
+        JLabel coordLabel = new JLabel("X: 0, Y: 0");
+        coordLabel.setBounds(10, 10, 150, 20);
+        coordLabel.setForeground(Color.RED);
+        coordLabel.setFont(new Font("Monospaced", Font.BOLD, 12));
+        menuPanel.add(coordLabel);
+        
+        // Lắng nghe di chuyển chuột để hiển thị tọa độ
+        menuPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                coordLabel.setText("X: " + e.getX() + ", Y: " + e.getY());
+            }
+        });
+        
+        // Tính toán vị trí căn giữa cho button
+        int buttonWidth = 100;
+        int buttonHeight = 40;
+        int buttonX = (windowWidth - buttonWidth) / 2;
+        int buttonY = (windowHeight - buttonHeight) / 2;
+        
+        Button startButton = new Button("Start", buttonX, buttonY, buttonWidth, buttonHeight);
+        menuPanel.add(startButton);
+    }
+    
+    /**
+     * Chuyển sang màn hình game
+     */
+}
