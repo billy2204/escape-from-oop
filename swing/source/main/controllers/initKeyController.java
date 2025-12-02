@@ -1,4 +1,6 @@
-public class initKeyController   {
+package controllers;
+
+public class initKeyController {
     private InputController inputController;
 
     public initKeyController(InputController inputController) {

@@ -1,0 +1,6 @@
+{
+    "java.project.sourcePaths": [
+        "swing/source/main"
+    ],
+    "java.project.outputPath": "bin"
+}

@@ -1,3 +1,5 @@
+package controllers;
+
 public class keyController implements InputController {
     private Input input;
     
