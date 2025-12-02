@@ -1,4 +1,4 @@
-package components.characters;
+package Entities.Characters;
 
 /**
  * Player - Character controlled by user

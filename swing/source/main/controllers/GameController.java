@@ -17,7 +17,7 @@ public class GameController {
     }
     
     /**
-     * Pause game
+    * Pause game
      */
     public void pauseGame() {
         // TODO: Implement pause logic

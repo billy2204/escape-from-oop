@@ -1,4 +1,4 @@
-package components.characters;
+package Entities.Characters;
 
 /**
  * Base class for all characters in the game

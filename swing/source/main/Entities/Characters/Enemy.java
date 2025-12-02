@@ -1,4 +1,4 @@
-package components.characters;
+package Entities.Characters;
 
 /**
  * Enemy - Character with AI behavior
