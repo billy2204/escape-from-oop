@@ -1,22 +1,21 @@
-package Entities.Characters;
+package entities.Characters;
+
+import interfaces.ICollidable;
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 /**
- * Player - Character controlled by user
- * Has health and can die
+ * Player character controlled by user input
  */
 public class Player extends Character {
-    private int health;
-    private boolean alive;
+    
+    private int health = 100;
+    private int maxHealth = 100;
+    private boolean alive = true;
     
     public Player(int x, int y) {
-        super(x, y, 32, 32, "player");
-        this.health = 100;
-        this.alive = true;
-    }
-    
-    @Override
-    protected String getDefaultState() {
-        return "idle";
+        super(x, y, 32, 32);
+        this.renderLayer = 10; // Player renders above most entities
     }
     
     @Override
@@ -25,32 +24,53 @@ public class Player extends Character {
     }
     
     @Override
-    public void update() {
-        // Player update logic
+    protected void onDeath() {
+        alive = false;
+        setState("dead");
+        System.out.println("Player died!");
     }
     
-    /**
-     * Called when player dies
-     */
-    public void die() {
-        this.alive = false;
-        this.state = "dead";
-    }
-    
-    /**
-     * Take damage
-     */
     public void takeDamage(int damage) {
-        this.health -= damage;
-        if (this.health <= 0) {
-            die();
+        if (!alive) return;
+        
+        health -= damage;
+        if (health <= 0) {
+            health = 0;
+            onDeath();
         }
+    }
+    
+    public void heal(int amount) {
+        if (!alive) return;
+        
+        health = Math.min(health + amount, maxHealth);
+    }
+    
+    @Override
+    public void onCollision(ICollidable other) {
+        // Handle collision with enemies, items, etc.
+        if (other instanceof Enemy) {
+            takeDamage(10);
+        }
+    }
+    
+    @Override
+    public void render(Graphics2D g2) {
+        if (!visible) return;
+        
+        // Placeholder rendering - draw colored rectangle
+        g2.setColor(alive ? Color.BLUE : Color.GRAY);
+        g2.fillRect(x, y, width, height);
+        
+        // Health bar
+        g2.setColor(Color.RED);
+        g2.fillRect(x, y - 8, width, 5);
+        g2.setColor(Color.GREEN);
+        g2.fillRect(x, y - 8, (int)(width * ((double)health / maxHealth)), 5);
     }
     
     // Getters
     public int getHealth() { return health; }
+    public int getMaxHealth() { return maxHealth; }
     public boolean isAlive() { return alive; }
-    
-    // Setters
-    public void setHealth(int health) { this.health = health; }
 }

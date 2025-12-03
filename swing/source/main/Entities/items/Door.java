@@ -1,59 +1,95 @@
-package components.items;
+
+
+import interfaces.ICollidable;
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 /**
- * Door - Example of UsableItem
- * Can be opened/closed like Chest but with different behavior
+ * Door that can be locked/unlocked
  */
-public class Door extends UsableItem {
-    private boolean isLocked;
+public class Door extends Entity {
+    
+    private boolean locked = true;
+    private boolean open = false;
     
     public Door(int x, int y) {
-        super(x, y, "door");
-        this.isLocked = false;
+        super(x, y, 32, 64);
     }
     
-    @Override
-    protected String getDefaultState() {
-        return "closed";
-    }
-    
-    @Override
-    public void interact() {
-        if (isLocked) {
-            System.out.println("Door is locked!");
-            return;
-        }
-        
-        if (state.equals("closed")) {
-            open();
-        } else {
-            close();
-        }
-    }
-    
-    public void open() {
-        if (!isLocked && state.equals("closed")) {
-            setState("open");
-        }
-    }
-    
-    public void close() {
-        if (state.equals("open")) {
-            setState("closed");
+    public void unlock() {
+        if (locked) {
+            locked = false;
+            setState("unlocked");
         }
     }
     
     public void lock() {
-        if (state.equals("closed")) {
-            isLocked = true;
+        if (!open) {
+            locked = true;
+            setState("locked");
         }
     }
     
-    public void unlock() {
-        isLocked = false;
+    public void openDoor() {
+        if (!locked && !open) {
+            open = true;
+            setState("open");
+            onUse();
+        }
+    }
+    
+    public void closeDoor() {
+        if (open) {
+            open = false;
+            setState(locked ? "locked" : "unlocked");
+        }
     }
     
     public boolean isLocked() {
-        return isLocked;
+        return locked;
+    }
+    
+    public boolean isOpen() {
+        return open;
+    }
+    
+    @Override
+    protected void onUse() {
+        System.out.println("Door opened!");
+    }
+    
+    @Override
+    public void onCollision(ICollidable other) {
+        if (other instanceof entities.Characters.Player) {
+            if (!locked) {
+                openDoor();
+            } else {
+                System.out.println("Door is locked!");
+            }
+        }
+    }
+    
+    @Override
+    public void render(Graphics2D g2) {
+        if (!visible) return;
+        
+        if (open) {
+            // Open door - just outline
+            g2.setColor(new Color(101, 67, 33));
+            g2.drawRect(x, y, width, height);
+        } else {
+            // Closed door
+            g2.setColor(new Color(101, 67, 33));
+            g2.fillRect(x, y, width, height);
+            
+            // Lock indicator
+            if (locked) {
+                g2.setColor(Color.YELLOW);
+                g2.fillOval(x + width/2 - 4, y + height/2, 8, 8);
+            } else {
+                g2.setColor(Color.GREEN);
+                g2.fillOval(x + width/2 - 4, y + height/2, 8, 8);
+            }
+        }
     }
 }

@@ -1,53 +1,63 @@
 package ui;
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Color;
-import java.awt.Font;
-// import components.items.Chest; // TODO: Tạo class Chest
-import graphics.Renderer;
+import java.awt.Image;
+import java.io.File;
+import managers.GameManager;
 
 /**
- * GamePanel - Màn hình game
+ * GamePanel - Màn hình game chính
  */
 public class GamePanel extends JPanel {
     
-    private Renderer renderer;
-    // private Chest chest1; // TODO: Tạo class Chest
-
+    private Image mapImage;
+    private GameManager gameManager;
+    
     public GamePanel() {
-        setLayout(null);
         setBackground(Color.BLACK);
+        setFocusable(true);
         
-        // Khởi tạo renderer
-        renderer = new Renderer();
+        // Load map
+        loadMap("resources\\map\\map.jpg");
         
-        // TODO: Cấu hình animation cho chest với delay 200ms
-        // renderer.configAnimation("chest", "idle", 200);
+        // Setup game
+        gameManager = GameManager.getInstance();
+        gameManager.startGame();
         
-        // TODO: Tạo chest instance
-        // chest1 = new Chest(200, 300);
-        
-        // Timer để repaint liên tục cho animation
-        Timer animationTimer = new Timer(50, e -> repaint());
-        animationTimer.start();
+        // Game loop - 60 FPS
+        Timer gameTimer = new Timer(16, e -> {
+            gameManager.update();
+            repaint();
+        });
+        gameTimer.start();
+    }
+    
+    private void loadMap(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            mapImage = new ImageIcon(file.getAbsolutePath()).getImage();
+        }
     }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
         
-        // TODO: Vẽ chest sử dụng renderer
-        // renderer.draw(g, chest1, chest1.getX(), chest1.getY(), 64, 64);
+        // 1. Vẽ map
+        if (mapImage != null) {
+            g.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
+        }
         
-        // UI
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 24));
-        g.drawString("GAME STARTED!", 150, 50);
+        // 2. Vẽ entities
+        gameManager.render(g2);
         
-        g.setFont(new Font("Arial", Font.PLAIN, 16));
-        g.drawString("Press ESC to return to menu", 130, 450);
+        // 3. Vẽ UI
+        // TODO: Thêm UI ở đây
     }
-    
 }

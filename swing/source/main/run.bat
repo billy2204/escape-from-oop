@@ -1,6 +1,6 @@
 @echo off
 echo Compiling...
-javac *.java ui/*.java controllers/*.java
+javac *.java ui/*.java
 
 if errorlevel 1 (
     echo Compilation failed!

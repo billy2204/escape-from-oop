@@ -2,7 +2,6 @@ package ui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -10,14 +9,12 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Font;
-import controllers.GameController;
 
 
 public class GameWindow extends JFrame {
     private static final int DEFAULT_WIDTH = 512;
     private static final int DEFAULT_HEIGHT = 512;
     
-    private GameController gameController;
     private int windowWidth;
     private int windowHeight;
     private BackgroundPanel menuPanel;
@@ -60,8 +57,6 @@ public class GameWindow extends JFrame {
      * Khởi tạo các component trong cửa sổ
      */
     private void initializeComponents() {
-        gameController = new GameController(this);
-        
         // Label hiển thị tọa độ chuột
         JLabel coordLabel = new JLabel("X: 0, Y: 0");
         coordLabel.setBounds(10, 10, 150, 20);

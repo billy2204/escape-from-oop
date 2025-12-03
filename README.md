@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# escape-from-oop
-OOP Lab Project
-=======
 # Escape from OOP
 
 A Java Swing-based 2D game project demonstrating Object-Oriented Programming principles and SOLID design patterns.
@@ -18,45 +14,43 @@ escape-from-oop/
 │           ├── run.bat                   # Windows build & run script
 │           ├── run.sh                    # macOS/Linux build & run script
 │           │
-│           ├── components/               # Game entities
+│           ├── interfaces/               # All interfaces (SOLID - ISP)
+│           │   ├── IRenderable.java      # For renderable objects
+│           │   ├── IUpdatable.java       # For objects that update each frame
+│           │   ├── ICollidable.java      # For collision detection
+│           │   ├── IAnimatable.java      # For animated objects
+│           │   ├── ISpriteLoader.java    # For loading sprites
+│           │   └── IInputHandler.java    # For input handling
+│           │
+│           ├── entities/                 # Game entities
+│           │   ├── Entity.java           # Base entity class
 │           │   ├── characters/
 │           │   │   ├── Character.java    # Base character class
-│           │   │   ├── Player.java       # Player character (1 health)
-│           │   │   └── Enemy.java        # Enemy character (instant kill)
-│           │   │
+│           │   │   ├── Player.java       # Player with health
+│           │   │   └── Enemy.java        # Enemy with AI
 │           │   └── items/
 │           │       ├── Item.java         # Base item class
-│           │       ├── Chest.java        # Interactive chest
-│           │       ├── Door.java         # Interactive door
-│           │       └── Rock.java         # Static obstacle
+│           │       ├── UsableItem.java   # Interactive items
+│           │       ├── Chest.java        # Openable chest
+│           │       └── Door.java         # Lockable door
 │           │
-│           ├── controllers/              # Game logic controllers
-│           │   └── GameController.java
+│           ├── input/                    # Input handling
+│           │   └── KeyboardInput.java    # Keyboard listener
 │           │
-│           ├── graphics/                 # Rendering system
-│           │   ├── Renderer.java         # Main renderer
-│           │   └── configRender.java     # Animation config
-│           │
-│           ├── physics/                  # Physics & collision
-│           │   ├── collision.java
-│           │   ├── hitBox.java
-│           │   └── wall.java
+│           ├── managers/                 # Game managers
+│           │   ├── GameManager.java      # Main game controller
+│           │   ├── EntityManager.java    # Entity lifecycle
+│           │   └── InputManager.java     # Input processing
 │           │
 │           ├── ui/                       # User interface
-│           │   ├── GameWindow.java       # Main window
-│           │   ├── GamePanel.java        # Game screen
-│           │   ├── BackgroundPanel.java  # Menu background
-│           │   └── Button.java           # Custom button
+│           │   ├── GameWindow.java       # Main window with CardLayout
+│           │   ├── GamePanel.java        # Game rendering & loop
+│           │   └── MenuPanel.java        # Main menu
 │           │
 │           └── resources/                # Game assets
-│               ├── backGround.png
 │               ├── characters/
-│               └── items/
-│                   └── chest_idle/
-│                       ├── 1.png
-│                       ├── 2.png
-│                       ├── 3.png
-│                       └── 4.png
+│               ├── items/
+│               └── map/
 │
 └── README.md
 ```
@@ -79,11 +73,6 @@ cd swing\source\main
 run.bat
 ```
 
-The script will:
-- Compile all Java files
-- Run the application
-- Clean up `.class` files after execution
-
 ### macOS / Linux
 
 1. Navigate to the main source directory:
@@ -91,107 +80,89 @@ The script will:
 cd swing/source/main
 ```
 
-2. Make the script executable (first time only):
+2. Make the script executable:
 ```bash
 chmod +x run.sh
 ```
 
-3. Run the shell script:
+3. Run:
 ```bash
 ./run.sh
 ```
 
-The script will:
-- Compile all Java files
-- Run the application
-- Clean up `.class` files after execution
-
 ## 🎮 Game Features
 
-- **Player Character**: Single life gameplay (instant death on enemy contact)
-- **Enemy AI**: Patrol and chase behavior
-- **Interactive Items**: Chests, doors, and obstacles
-- **Animated Sprites**: Frame-based animation system
-- **Custom Renderer**: Flexible rendering engine with configurable animations
+- **Player Character**: Health-based survival (100 HP)
+- **Enemy AI**: Patrol → Chase → Attack behavior states
+- **Interactive Items**: Chests (open/close) and Doors (lock/unlock)
+- **Collision System**: Entity-based collision detection
+- **Game States**: Menu, Playing, Paused, Game Over
 
-## 🏗️ Architecture & Design Patterns
-
-This project follows **SOLID principles**:
+## 🏗️ Architecture & SOLID Principles
 
 ### Single Responsibility Principle (SRP)
-- Each class has one clear responsibility
-- `Renderer` only handles drawing
-- `configRender` only manages animation frames
-- `GameController` only manages game logic
+- `EntityManager` → Only manages entity lifecycle
+- `InputManager` → Only processes input
+- `GameManager` → Coordinates managers
 
 ### Open/Closed Principle (OCP)
-- `Character` → `Player` / `Enemy` (extendable)
-- `Item` → `UsableItem` / `UnusableItem` (extendable)
+- `Entity` base class can be extended without modification
+- `Character` → `Player`, `Enemy`
+- `Item` → `UsableItem` → `Chest`, `Door`
 
 ### Liskov Substitution Principle (LSP)
-- All subclasses can replace their parent classes
-- `Renderer.draw()` accepts any `Item` subclass
+- All entities can be used interchangeably in `EntityManager`
+- All items can trigger collision with `ICollidable`
 
-### Template Method Pattern
-- `Character.getDefaultState()`
-- `Item.getDefaultState()`
-- `Character.update()` and `Item.update()`
+### Interface Segregation Principle (ISP)
+- `IRenderable` - for rendering
+- `IUpdatable` - for game loop updates
+- `ICollidable` - for collision
+- `IAnimatable` - for animation
+
+### Dependency Inversion Principle (DIP)
+- High-level modules depend on interfaces, not concrete implementations
+- `InputManager` uses `IInputHandler` interface
+
+### Design Patterns Used
+- **Template Method**: `Character.getDefaultSpeed()`, `Entity.getDefaultState()`
+- **Singleton**: `GameManager.getInstance()`
+- **State Pattern**: `Enemy.AIState` (IDLE, PATROL, CHASE, ATTACK)
+- **Observer Pattern**: KeyListener for input events
 
 ## 🎨 Adding New Content
 
-### Adding a New Item
+### Adding a New Entity
 ```java
-package components.items;
+package entities;
 
-public class MyItem extends UsableItem {
-    public MyItem(int x, int y) {
-        super(x, y, "myitem");
+public class MyEntity extends Entity {
+    public MyEntity(int x, int y) {
+        super(x, y, 32, 32);
     }
     
     @Override
-    public void interact() {
-        // Define interaction logic
-    }
-}
-```
-
-### Adding a New Character
-```java
-package components.characters;
-
-public class MyCharacter extends Character {
-    public MyCharacter(int x, int y) {
-        super(x, y, 32, 32, "mycharacter");
-    }
+    protected String getDefaultState() { return "idle"; }
     
     @Override
-    protected String getDefaultState() {
-        return "idle";
-    }
+    public void update() { /* logic */ }
     
     @Override
-    protected int getDefaultSpeed() {
-        return 3;
-    }
+    public void render(Graphics2D g2) { /* drawing */ }
+    
+    @Override
+    public void onCollision(ICollidable other) { /* collision */ }
+    
+    @Override
+    public void updateAnimation() { /* animation */ }
 }
 ```
 
 ## 📝 Controls
 
-- **Arrow Keys / WASD**: Move player (to be implemented)
-- **ESC**: Return to menu
-
-## 🛠️ Development
-
-### Compile Only
-```bash
-javac -d . Application.java ui/*.java controllers/*.java components/*/*.java graphics/*.java
-```
-
-### Run Only (after compilation)
-```bash
-java Application
-```
+- **WASD / Arrow Keys**: Move player
+- **Space**: Action/Interact
+- **ESC**: Pause/Menu
 
 ## 📄 License
 
@@ -200,8 +171,3 @@ This project is for educational purposes.
 ## 👥 Contributors
 
 - Billy (billy2204)
-
----
-
-**Note**: Make sure to place sprite assets in the correct `resources/` folders before running the game.
->>>>>>> 63f6d10 (First frame of game)
