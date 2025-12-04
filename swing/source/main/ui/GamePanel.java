@@ -22,12 +22,17 @@ public class GamePanel extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
         
+        System.out.println("=== GamePanel Constructor ===");
+        
         // Load map
-        loadMap("resources\\map\\map.jpg");
+        loadMap("/Users/billy.is.real/Documents/projectOOP/swing/source/main/resources/map/map.jpg");
         
         // Setup game
         gameManager = GameManager.getInstance();
+        gameManager.registerInput(this);  // Đăng ký input handler
         gameManager.startGame();
+        
+        System.out.println("GamePanel initialized. Focus: " + isFocusable());
         
         // Game loop - 60 FPS
         Timer gameTimer = new Timer(16, e -> {
@@ -35,6 +40,8 @@ public class GamePanel extends JPanel {
             repaint();
         });
         gameTimer.start();
+        
+        System.out.println("Game loop started");
     }
     
     private void loadMap(String path) {
@@ -59,5 +66,6 @@ public class GamePanel extends JPanel {
         
         // 3. Vẽ UI
         // TODO: Thêm UI ở đây
+
     }
 }

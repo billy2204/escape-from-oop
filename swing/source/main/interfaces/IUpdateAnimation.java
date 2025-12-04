@@ -3,8 +3,6 @@ package interfaces;
 /**
  * Interface for objects that can be animated
  */
-public interface IAnimatable {
+public interface IUpdateAnimation {
     void updateAnimation();
-    String getCurrentState();
-    void setState(String state);
 }

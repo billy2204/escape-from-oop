@@ -1,3 +1,4 @@
+package entities.items;
 
 
 import interfaces.ICollidable;
@@ -59,7 +60,7 @@ public class Door extends Entity {
     }
     
     @Override
-    public void onCollision(ICollidable other) {
+    public void onCollision(Ientities.characters
         if (other instanceof entities.Characters.Player) {
             if (!locked) {
                 openDoor();

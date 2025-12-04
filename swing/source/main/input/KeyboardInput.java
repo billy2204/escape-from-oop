@@ -16,7 +16,7 @@ public class KeyboardInput implements KeyListener, IInputHandler {
     private static final int KEY_DOWN = KeyEvent.VK_S;
     private static final int KEY_LEFT = KeyEvent.VK_A;
     private static final int KEY_RIGHT = KeyEvent.VK_D;
-    private static final int KEY_ACTION = KeyEvent.VK_SPACE;
+    private static final int KEY_ACTION = KeyEvent.VK_V;
     private static final int KEY_ESCAPE = KeyEvent.VK_ESCAPE;
     
     // Arrow keys as alternative
@@ -24,7 +24,11 @@ public class KeyboardInput implements KeyListener, IInputHandler {
     private static final int KEY_DOWN_ALT = KeyEvent.VK_DOWN;
     private static final int KEY_LEFT_ALT = KeyEvent.VK_LEFT;
     private static final int KEY_RIGHT_ALT = KeyEvent.VK_RIGHT;
-    
+    public KeyboardInput() {
+        // Initialize all keys to not pressed
+        //set key event ready to use
+
+    }
     @Override
     public void keyTyped(KeyEvent e) {
         // Not used
@@ -66,25 +70,20 @@ public class KeyboardInput implements KeyListener, IInputHandler {
         return keys[KEY_RIGHT] || keys[KEY_RIGHT_ALT];
     }
     
-    @Override
-    public boolean isRequestingAction() {
-        return keys[KEY_ACTION];
-    }
+
     
     @Override
     public boolean isReleased() {
         return !isRequestingUp() && !isRequestingDown() && 
                !isRequestingLeft() && !isRequestingRight();
     }
-    
+    @Override
     public boolean isEscapePressed() {
         return keys[KEY_ESCAPE];
     }
     
-    public boolean isKeyPressed(int keyCode) {
-        if (keyCode >= 0 && keyCode < keys.length) {
-            return keys[keyCode];
-        }
-        return false;
+    @Override
+    public boolean changeView() {
+        return keys[KEY_ACTION];
     }
 }

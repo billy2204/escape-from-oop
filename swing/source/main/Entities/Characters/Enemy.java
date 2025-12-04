@@ -1,5 +1,5 @@
-package entities.Characters;
 
+import entities.*;
 import interfaces.ICollidable;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -8,7 +8,7 @@ import java.awt.Color;
  * Enemy character with AI behavior
  * Uses State Pattern for different behaviors
  */
-public class Enemy extends Character {
+public class Enemy extends Entity {
     
     public enum AIState {
         IDLE, PATROL, CHASE, ATTACK

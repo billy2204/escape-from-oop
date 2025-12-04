@@ -42,7 +42,7 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null); // Center window
         
         // Tạo menu panel (màn hình chính)
-        menuPanel = new BackgroundPanel("resources\\backGround.png");
+        menuPanel = new BackgroundPanel("/Users/billy.is.real/Documents/projectOOP/swing/source/main/resources/backGround.png");
         menuPanel.setBounds(0, 0, windowWidth, windowHeight);
         
         // Tạo game panel (màn hình chơi game)

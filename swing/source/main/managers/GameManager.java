@@ -1,20 +1,29 @@
 package managers;
 
 import java.awt.Graphics2D;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+
 import entities.Entity;
+import entities.items.Chest;
+import entities.characters.Player;
+import graphics.AnimationFactory;
+import input.KeyboardInput;
 
 /**
- * Quản lý game - clean version
+ * Quản lý game
  */
 public class GameManager {
     
     private static GameManager instance;
     private List<Entity> entities;
+    private Player player;
+    private KeyboardInput input;
     
     private GameManager() {
         entities = new ArrayList<>();
+        input = new KeyboardInput();
     }
     
     public static GameManager getInstance() {
@@ -24,11 +33,34 @@ public class GameManager {
         return instance;
     }
     
+    /**
+     * Đăng ký KeyListener với game component (gọi từ GamePanel/GameWindow)
+     * @param component Component cần lắng nghe phím (JPanel, JFrame, etc.)
+     */
+    public void registerInput(Component component) {
+        component.addKeyListener(input);
+        component.setFocusable(true);
+        component.requestFocus();
+    }
+    
     /** Gọi khi bắt đầu game */
     public void startGame() {
+        System.out.println("=== GameManager.startGame() ===");
         entities.clear();
-        // TODO: Thêm entities ở đây
-        // entities.add(new Player(100, 100));
+        
+        // Tạo Player
+        player = new Player(100, 100);
+        addEntity(player);
+        System.out.println("Player created at (100, 100)");
+        
+        // Tạo Chest object
+        Chest chest = new Chest(310, 290);
+        // Inject animations (SOLID - Dependency Injection)
+        chest.registerAnimation("close", AnimationFactory.createChestAnimator("close"));
+        // Thêm vào game
+        addEntity(chest);
+        System.out.println("Chest created at (310, 290)");
+        System.out.println("Total entities: " + entities.size());
     }
     
     /** Thêm entity vào game */
@@ -43,8 +75,26 @@ public class GameManager {
     
     /** Cập nhật tất cả entities */
     public void update() {
+        // Xử lý input cho player
+        if (player != null && input != null) {
+            if (input.isRequestingUp()) {
+                player.moveUp();
+            }
+            if (input.isRequestingDown()) {
+                player.moveDown();
+            }
+            if (input.isRequestingLeft()) {
+                player.moveLeft();
+            }
+            if (input.isRequestingRight()) {
+                player.moveRight();
+            }
+        }
+        
+        // Update tất cả entities
         for (Entity entity : entities) {
-            entity.update();
+            entity.updateLogic();
+            entity.updateAnimation();
         }
     }
     

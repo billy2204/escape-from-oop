@@ -8,6 +8,7 @@ public interface IInputHandler {
     boolean isRequestingDown();
     boolean isRequestingLeft();
     boolean isRequestingRight();
-    boolean isRequestingAction();
     boolean isReleased();
+    boolean changeView();
+    boolean isEscapePressed();
 }
