@@ -82,6 +82,13 @@ public class AnimationController implements IUpdateAnimation {
     /**
      * Update animation - gọi mỗi game tick
      */
+    public void update() {
+        updateAnimation();
+    }
+    
+    /**
+     * Update animation - gọi mỗi game tick
+     */
     public void updateAnimation() {
         if (!playing || frames.isEmpty()) return;
         
@@ -154,6 +161,10 @@ public class AnimationController implements IUpdateAnimation {
         if (frame >= 0 && frame < frames.size()) {
             this.currentFrame = frame;
         }
+    }
+    
+    public void setState(String state) {
+        // AnimationController không quản lý state, để entity xử lý
     }
     
     // Getters & Setters

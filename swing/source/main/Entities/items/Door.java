@@ -1,6 +1,5 @@
 package entities.items;
-
-
+import entities.Entity;
 import interfaces.ICollidable;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -17,59 +16,17 @@ public class Door extends Entity {
         super(x, y, 32, 64);
     }
     
-    public void unlock() {
-        if (locked) {
-            locked = false;
-            setState("unlocked");
-        }
-    }
-    
-    public void lock() {
-        if (!open) {
-            locked = true;
-            setState("locked");
-        }
-    }
-    
-    public void openDoor() {
-        if (!locked && !open) {
-            open = true;
-            setState("open");
-            onUse();
-        }
-    }
-    
-    public void closeDoor() {
-        if (open) {
-            open = false;
-            setState(locked ? "locked" : "unlocked");
-        }
-    }
-    
-    public boolean isLocked() {
-        return locked;
-    }
-    
-    public boolean isOpen() {
-        return open;
-    }
-    
+
     @Override
-    protected void onUse() {
-        System.out.println("Door opened!");
+    public void updateAnimation() {
+            
     }
-    
+
+
     @Override
-    public void onCollision(Ientities.characters
-        if (other instanceof entities.Characters.Player) {
-            if (!locked) {
-                openDoor();
-            } else {
-                System.out.println("Door is locked!");
-            }
-        }
+    public void updateLogic() {
+            
     }
-    
     @Override
     public void render(Graphics2D g2) {
         if (!visible) return;

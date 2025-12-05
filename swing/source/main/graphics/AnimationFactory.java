@@ -17,11 +17,13 @@ public class AnimationFactory {
      * Tạo animator cho Chest
      */
     public static AnimationController createChestAnimator(String state) {
-        AnimationController animator = new AnimationController();
+        AnimationController animator = new AnimationController(10);
         if (state.equals("idle")) {
             animator.loadFrames(ITEMS_PATH + "chest/idle");
+            animator.setLoop(true);
         } else if (state.equals("open")) {
             animator.loadFrames(ITEMS_PATH + "chest/open");
+            animator.setLoop(false);
         }
         return animator;
     }

@@ -42,7 +42,7 @@ public class Chest extends Entity {
      */
     public void registerAnimation(String stateName, AnimationController animation) {
         animations.put(stateName, animation);
-        if (currentAnimation == null && stateName.equals("close")) {
+        if (currentAnimation == null && stateName.equals("idle")) {
             currentAnimation = animation;
         }
     }
@@ -71,8 +71,8 @@ public class Chest extends Entity {
     
     public void close() {
         if (open) {
-            setState("close");
-            setAnimation("close");
+            setState("idle");
+            setAnimation("idle");
         }
     }
     // === Abstract methods từ Entity ===
@@ -89,7 +89,13 @@ public class Chest extends Entity {
     
     @Override
     public void updateAnimation() {
-        // Cập nhật animation hiện tại
+        if (currentAnimation != null) {
+            currentAnimation.update();
+        }
+    }
+    
+    public void onCollision(ICollidable other) {
+        // Xử lý va chạm nếu cần
     }
     
     @Override

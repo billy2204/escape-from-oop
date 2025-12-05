@@ -45,22 +45,17 @@ public class GameManager {
     
     /** Gọi khi bắt đầu game */
     public void startGame() {
-        System.out.println("=== GameManager.startGame() ===");
         entities.clear();
         
         // Tạo Player
         player = new Player(100, 100);
         addEntity(player);
-        System.out.println("Player created at (100, 100)");
         
-        // Tạo Chest object
+        // Tạo Chest
         Chest chest = new Chest(310, 290);
-        // Inject animations (SOLID - Dependency Injection)
-        chest.registerAnimation("close", AnimationFactory.createChestAnimator("close"));
-        // Thêm vào game
+        chest.registerAnimation("idle", AnimationFactory.createChestAnimator("idle"));
+        chest.registerAnimation("open", AnimationFactory.createChestAnimator("open"));
         addEntity(chest);
-        System.out.println("Chest created at (310, 290)");
-        System.out.println("Total entities: " + entities.size());
     }
     
     /** Thêm entity vào game */
