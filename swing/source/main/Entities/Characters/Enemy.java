@@ -1,3 +1,5 @@
+package entities.characters;
+package entities.Characters;
 
 import entities.*;
 import interfaces.ICollidable;

@@ -25,7 +25,7 @@ public class GamePanel extends JPanel {
         System.out.println("=== GamePanel Constructor ===");
         
         // Load map
-        loadMap("/Users/billy.is.real/Documents/projectOOP/swing/source/main/resources/map/map.jpg");
+        loadMap("resources/map/map.jpg");
         
         // Setup game
         gameManager = GameManager.getInstance();
