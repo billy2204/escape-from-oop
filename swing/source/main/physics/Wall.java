@@ -10,6 +10,7 @@ public class Wall {
     private final byte WALL = 1;
     private final byte EMPTY = 0;
     private final byte GATE = 2;
+    private final byte TRAP = 3;
     protected byte[][] map;
     public boolean isWall = true;
     private boolean CanRender = true;
@@ -46,6 +47,10 @@ public class Wall {
         setBlock( 690, 0, 703, 202);
         setBlock( 690, 263, 1024, 326);
         setGate(690, 203, 703, 262);
+
+        // ========= Decorators ========
+        //995 444 1023 508
+        setTrap(995, 444, 1023, 508);
     }
 
     public void setBorder(){
@@ -86,7 +91,20 @@ public class Wall {
             }
         }
     }
-
+    public void setTrap(int x1, int y1, int x2, int y2){
+        int startX = Math.min(x1, x2);
+        int endX   = Math.max(x1, x2);
+        int startY = Math.min(y1, y2);
+        int endY   = Math.max(y1, y2);
+        for (int i = startX; i <= endX; i++) {
+            for (int j = startY; j <= endY; j++) {
+                // Kiểm tra bounds (nếu cần) để tránh lỗi ArrayOutOfBounds
+                if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
+                    map[i][j] = TRAP;
+                }
+            }
+        }
+    }
 
     // Kiểm tra vị trí (x, y) có phải tường không
     public boolean isWall(int x, int y) {
@@ -109,6 +127,10 @@ public class Wall {
                     g.setColor(Color.GREEN);
                     g.fillRect(x, y, 1, 1); // Vẽ pixel màu xanh lá tại vị trí cổng
                     
+                }
+                else if (map[x][y] == TRAP) {
+                    g.setColor(Color.BLUE);
+                    g.fillRect(x, y, 1, 1); // Vẽ pixel màu xanh dương tại vị trí bẫy
                 }
             }
         }

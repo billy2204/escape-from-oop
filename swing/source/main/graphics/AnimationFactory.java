@@ -35,7 +35,7 @@ public class AnimationFactory {
     public static AnimationController createDoorAnimator(String state) {
         AnimationController a = new AnimationController(10);
         switch (state) {
-            case "idle" -> { a.loadFrames(ITEMS + "door/idle"); a.setLoop(true); }
+            case "idle" -> { a.loadFrames(ITEMS + "door/idle"); a.setLoop(false); }
             case "open" -> { a.loadFrames(ITEMS + "door/open"); a.setLoop(false); }
         }
         return a;

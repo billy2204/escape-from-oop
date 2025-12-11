@@ -10,4 +10,5 @@ public interface AnimationProvider {
     AnimationController createPlayerAnimator(String state);
     AnimationController createChestAnimator(String state);
     AnimationController createCoinAnimator(String state);
+    AnimationController createDoorAnimator(String state);
 }

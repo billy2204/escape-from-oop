@@ -13,6 +13,9 @@ import graphics.AnimationProvider;
 import graphics.DefaultAnimationProvider;
 import input.KeyboardInput;
 import physics.Wall;
+
+
+
 /**
  * Quản lý game
  */
@@ -22,6 +25,7 @@ public class GameManager {
     private List<Entity> entities;
     private Player player;
     private Chest chest;
+    private Door door;
     private KeyboardInput input;
     private Wall wall;
     private GameManager() {
@@ -61,6 +65,11 @@ public class GameManager {
 
         chest = factory.createChest(310, 263);
         addEntity(chest);
+
+        door = factory.createDoor(390, 102);
+        addEntity(door);
+
+        
     }
     
     /** Thêm entity vào game */

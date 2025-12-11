@@ -19,4 +19,8 @@ public class DefaultAnimationProvider implements AnimationProvider {
     public AnimationController createCoinAnimator(String state) {
         return AnimationFactory.createCoinAnimator(state);
     }
+    @Override
+    public AnimationController createDoorAnimator(String state) {
+        return AnimationFactory.createDoorAnimator(state);
+    }
 }

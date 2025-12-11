@@ -1,7 +1,6 @@
 package entities.items;
 import entities.Entity;
-import interfaces.ICollidable;
-import java.awt.Graphics2D;
+
 import java.awt.Color;
 
 /**
@@ -9,13 +8,30 @@ import java.awt.Color;
  */
 public class Door extends Entity {
     
-    private boolean locked = true;
-    private boolean open = false;
+    private boolean isLocked = true;
     
     public Door(int x, int y) {
-        super(x, y, 32, 64);
+        super(x, y, 64, 80);
+        this.renderLayer = 1;
     }
-    
+    public void registerAnimations(graphics.AnimationProvider provider) {
+        if (provider == null) return;
+        registerAnimation("idle", provider.createDoorAnimator("idle"));
+        registerAnimation("open", provider.createDoorAnimator("open"));
+        setAnimation("idle");
+    }
+
+    public void open() {
+        if (isLocked) {
+            isLocked = false;
+            setAnimation("open");
+        }
+    }
+    public void close() {
+        isLocked = true;
+        setAnimation("idle");
+    } 
+    public boolean isLock() { return isLocked; }
     @Override
     public void update() { // or 'public void update(long delta)' if that's the signature
         // TODO: implement behavior for player update
