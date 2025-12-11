@@ -16,38 +16,12 @@ public class Door extends Entity {
         super(x, y, 32, 64);
     }
     
-
+    @Override
+    public void update() { // or 'public void update(long delta)' if that's the signature
+        // TODO: implement behavior for player update
+    }
     @Override
     public void updateAnimation() {
             
-    }
-
-
-    @Override
-    public void updateLogic() {
-            
-    }
-    @Override
-    public void render(Graphics2D g2) {
-        if (!visible) return;
-        
-        if (open) {
-            // Open door - just outline
-            g2.setColor(new Color(101, 67, 33));
-            g2.drawRect(x, y, width, height);
-        } else {
-            // Closed door
-            g2.setColor(new Color(101, 67, 33));
-            g2.fillRect(x, y, width, height);
-            
-            // Lock indicator
-            if (locked) {
-                g2.setColor(Color.YELLOW);
-                g2.fillOval(x + width/2 - 4, y + height/2, 8, 8);
-            } else {
-                g2.setColor(Color.GREEN);
-                g2.fillOval(x + width/2 - 4, y + height/2, 8, 8);
-            }
-        }
     }
 }

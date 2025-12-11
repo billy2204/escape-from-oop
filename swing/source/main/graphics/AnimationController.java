@@ -22,7 +22,6 @@ public class AnimationController implements IUpdateAnimation {
     
     /**
      * Constructor với custom delay
-     * @param frameDelay Số lần gọi update() trước khi đổi frame (cao hơn = chậm hơn)
      */
     public AnimationController(int frameDelay) {
         this.frames = new ArrayList<>();
@@ -70,13 +69,6 @@ public class AnimationController implements IUpdateAnimation {
         }
         
         System.out.println("Loaded " + frames.size() + " frames from " + folderPath);
-    }
-    
-    /**
-     * Thêm frame thủ công
-     */
-    public void addFrame(BufferedImage frame) {
-        frames.add(frame);
     }
     
     /**
@@ -161,10 +153,6 @@ public class AnimationController implements IUpdateAnimation {
         if (frame >= 0 && frame < frames.size()) {
             this.currentFrame = frame;
         }
-    }
-    
-    public void setState(String state) {
-        // AnimationController không quản lý state, để entity xử lý
     }
     
     // Getters & Setters

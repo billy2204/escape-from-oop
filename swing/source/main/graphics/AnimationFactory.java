@@ -1,90 +1,63 @@
 package graphics;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import java.util.Arrays;
 /**
  * AnimationFactory - Tạo AnimationController cho các entity
- * Single Responsibility: Chỉ lo việc tạo và config animation
+ * Single Responsibility: Chỉ tạo và config animation
  */
 public class AnimationFactory {
     
-    private static final String ITEMS_PATH = "resources/items/";
-    private static final String CHARACTERS_PATH = "resources/characters/";
+    private static final String ITEMS = "resources/items/";
+    private static final String CHARS = "resources/characters/";
     
-    /**
-     * Tạo animator cho Chest
-     */
+    // ===== CHEST =====
     public static AnimationController createChestAnimator(String state) {
-        AnimationController animator = new AnimationController(10);
-        if (state.equals("idle")) {
-            animator.loadFrames(ITEMS_PATH + "chest/idle");
-            animator.setLoop(true);
-        } else if (state.equals("open")) {
-            animator.loadFrames(ITEMS_PATH + "chest/open");
-            animator.setLoop(false);
+        AnimationController a = new AnimationController(10);
+        switch (state) {
+            case "idle" -> { a.loadFrames(ITEMS + "chest/idle"); a.setLoop(true); }
+            case "open" -> { a.loadFrames(ITEMS + "chest/open"); a.setLoop(false); }
         }
-        return animator;
+        return a;
     }
     
-    /**
-     * Tạo animator cho Door
-     */
-    public static AnimationController createDoorAnimator() {
-        AnimationController animator = new AnimationController();
-        
-        
-        return animator;
+    // ===== PLAYER =====
+    public static AnimationController createPlayerAnimator(String state) {
+        AnimationController a = new AnimationController(8);
+        String path = CHARS + "shin/";
+        switch (state) {
+            case "idle"       -> { a.loadFrames(path + "stand"); a.setLoop(true); }
+            case "walk_left"  -> { a.loadFrames(path + "walk_left"); a.setLoop(true); }
+            case "walk_right" -> { a.loadFrames(path + "walk_right"); a.setLoop(true); }
+        }
+        return a;
     }
     
-    /**
-     * Tạo animator cho Player
-     */
-    public static AnimationController createPlayerAnimator() {
-        AnimationController animator = new AnimationController();
-        
-        
-        return animator;
+    // ===== DOOR =====
+    public static AnimationController createDoorAnimator(String state) {
+        AnimationController a = new AnimationController(10);
+        switch (state) {
+            case "idle" -> { a.loadFrames(ITEMS + "door/idle"); a.setLoop(true); }
+            case "open" -> { a.loadFrames(ITEMS + "door/open"); a.setLoop(false); }
+        }
+        return a;
     }
     
-    /**
-     * Tạo animator cho Enemy
-     */
-    public static AnimationController createEnemyAnimator() {
-        AnimationController animator = new AnimationController();
+    // ===== ENEMY =====
+    public static AnimationController createEnemyAnimator(String state) {
+        AnimationController a = new AnimationController(10);
+        if ("idle".equals(state)) {
+            a.loadFrames(CHARS + "enemy/idle");
+            a.setLoop(true);
+        }
+        return a;
+    }
 
-        return animator;
-    }
-    
-    /**
-     * Load frames từ folder
-     */
-    private static BufferedImage[] loadFrames(String folderPath) {
-        File folder = new File(folderPath);
-        if (!folder.exists() || !folder.isDirectory()) {
-            System.err.println("Folder not found: " + folderPath);
-            return new BufferedImage[0];
+    // ===== COIN =====
+    public static AnimationController createCoinAnimator(String state) {
+        AnimationController a = new AnimationController(10);
+        if ("idle".equals(state) || "spin".equals(state)) {
+            a.loadFrames(ITEMS + "coin");
+            a.setLoop(true);
         }
-        
-        File[] files = folder.listFiles((dir, name) -> 
-            name.endsWith(".png") || name.endsWith(".jpg"));
-        
-        if (files == null || files.length == 0) {
-            return new BufferedImage[0];
-        }
-        
-        Arrays.sort(files);
-        BufferedImage[] frames = new BufferedImage[files.length];
-        
-        for (int i = 0; i < files.length; i++) {
-            try {
-                frames[i] = ImageIO.read(files[i]);
-            } catch (Exception e) {
-                System.err.println("Cannot load: " + files[i]);
-            }
-        }
-        
-        return frames;
+        return a;
     }
 }

@@ -12,9 +12,8 @@ import java.awt.Font;
 
 
 public class GameWindow extends JFrame {
-    private static final int DEFAULT_WIDTH = 512;
+    private static final int DEFAULT_WIDTH = 1024;
     private static final int DEFAULT_HEIGHT = 512;
-    
     private int windowWidth;
     private int windowHeight;
     private BackgroundPanel menuPanel;
@@ -31,26 +30,28 @@ public class GameWindow extends JFrame {
         initializeComponents();
     }
     
+
+
     /**
      * Khởi tạo cấu hình cơ bản của cửa sổ
      */
     private void initializeWindow() {
         setTitle("Escape from OOP");
-        setSize(windowWidth, windowHeight);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        setLocationRelativeTo(null); // Center window
         
         // Tạo menu panel (màn hình chính)
         menuPanel = new BackgroundPanel("resources/backGround.png");
-        menuPanel.setBounds(0, 0, windowWidth, windowHeight);
+        menuPanel.setPreferredSize(new java.awt.Dimension(windowWidth, windowHeight));
         
         // Tạo game panel (màn hình chơi game)
         gamePanel = new GamePanel();
-        gamePanel.setBounds(0, 0, windowWidth, windowHeight);
+        gamePanel.setPreferredSize(new java.awt.Dimension(windowWidth, windowHeight));
         
         // Bắt đầu với menu panel
         setContentPane(menuPanel);
+        pack(); // Size window to content so content area matches preferred sizes
+        setLocationRelativeTo(null); // Center window
     }
     
     /**
@@ -93,7 +94,8 @@ public class GameWindow extends JFrame {
      */
     public void startGame() {
         setContentPane(gamePanel);
-        gamePanel.requestFocus();
+        pack(); // Re-pack so the window fits the game panel exactly
+        gamePanel.requestFocusInWindow();
         revalidate();
         repaint();
     }

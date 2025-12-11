@@ -1,9 +1,10 @@
 package interfaces;
 
-/**
- * Interface for objects that can collide with others
- */
+import java.awt.Rectangle;
+
 public interface ICollidable {
-    java.awt.Rectangle getBounds();
-    void onCollision(ICollidable other);
+    /**
+     * Trả về hitbox (hình chữ nhật) của entity để check va chạm
+     */
+    Rectangle getHitBox();
 }
