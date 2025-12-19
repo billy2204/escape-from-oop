@@ -13,7 +13,6 @@ public class MapManager {
     
     private final int mapWidth = 1024;
     private final int mapHeight = 512;
-    public boolean showWalls = false;
     public MapManager() {
         walls = new ArrayList<>();
         gates = new ArrayList<>();
@@ -49,7 +48,6 @@ public class MapManager {
         int w = Math.abs(x1 - x2);
         int h = Math.abs(y1 - y2);
         
-        // Tránh lỗi width/height = 0 (tạo ra tường vô hình 1px cho an toàn)
         if (w == 0) w = 1;
         if (h == 0) h = 1;
 
@@ -65,9 +63,6 @@ public class MapManager {
         Rectangle areaToRemove = new Rectangle(x, y, w, h);
 
         walls.removeIf(wall -> areaToRemove.contains(wall));
-        
-        System.out.println("MapManager: Đã thực hiện xóa tường trong khu vực " + areaToRemove);
-        System.out.println("Tổng số tường còn lại: " + walls.size());
     }
     private void addExit(int x1, int y1, int x2, int y2) {
         int x = Math.min(x1, x2);
@@ -78,17 +73,6 @@ public class MapManager {
     }
     
     public void draw(Graphics2D g) {
-        if (showWalls) {
-            g.setColor(new Color(255, 0, 0, 120));
-            for (Rectangle r : walls) {
-                g.fillRect(r.x, r.y, r.width, r.height);
-            }
-            g.setColor(new Color(180, 0, 0));
-            for (Rectangle r : walls) {
-                g.drawRect(r.x, r.y, r.width, r.height);
-            }
-        }
-        
         g.setColor(new Color(0, 255, 0, 100));
         for (Rectangle r : gates) {
             g.fillRect(r.x, r.y, r.width, r.height);
@@ -103,11 +87,5 @@ public class MapManager {
     public List<Rectangle> getExit() {
         return exit;
     }
-    public void toggleShowWalls() {
-        showWalls = !showWalls;
-        System.out.println("MapManager: Toggle Walls -> " + showWalls);
-    }
-    public boolean isShowWalls() {
-        return showWalls;
-    }
+
 }

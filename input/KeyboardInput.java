@@ -1,13 +1,12 @@
 package input;
 
-import input.IInputHandler;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
  * Handles keyboard input
  */
-public class KeyboardInput implements KeyListener, IInputHandler {
+public class KeyboardInput implements KeyListener, IMovementInput, IMenuInput {
     
     private boolean[] keys = new boolean[256];
     private boolean[] consumed = new boolean[256];
@@ -19,7 +18,6 @@ public class KeyboardInput implements KeyListener, IInputHandler {
     private static final int KEY_ESCAPE = KeyEvent.VK_ESCAPE;
     private static final int KEY_CHANGE_VIEW = KeyEvent.VK_V;
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
-    private static final int KEY_TOGGLE_WALLS = KeyEvent.VK_T;
     private static final int KEY_ENTER = KeyEvent.VK_ENTER;
 
     private static final int KEY_UP_ALT = KeyEvent.VK_UP;
@@ -100,18 +98,11 @@ public class KeyboardInput implements KeyListener, IInputHandler {
         }
         return false;
     }
-    //Return true if any key is currently pressed.
     public boolean isPressed(){
         for (int i = 0; i < keys.length; i++) {
             if (keys[i]) return true;
         }
         return false;
     }
-    public boolean isToggleWallsPressed() {
-        if (keys[KEY_TOGGLE_WALLS] && !consumed[KEY_TOGGLE_WALLS]) {
-            consumed[KEY_TOGGLE_WALLS] = true;
-            return true;
-        }
-        return false;
-    }
+
 }

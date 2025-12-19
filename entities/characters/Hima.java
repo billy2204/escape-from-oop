@@ -6,7 +6,6 @@ public class Hima extends Enemy {
 
     public Hima(float x, float y) {
         super(x, y, 32, 32, "hima");
-        // higher force/speed
         rb.setPhysicsParams(2f, 0.5f, 0.9f);
         setdDetectionRadius(150.0f);
     }

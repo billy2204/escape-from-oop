@@ -28,20 +28,13 @@ public class AnimationManager {
     private long timer = 0;      // elapsed time accumulator (ms)
     private boolean finished = false;
 
-    /**
-     * CONFIG: speedMs là thời gian hiển thị của 1 frame
-     * Ví dụ: 100 -> Mỗi ảnh hiện trong 100ms (0.1 giây)
-     */
+
     public void addAction(String actionName, String path, long speedMs, boolean isLoop) {
         List<BufferedImage> frames = ResourceManager.loadFrames(path);
         if (!frames.isEmpty()) {
             states.put(actionName, new AnimState(frames, speedMs, isLoop));
         }
     }
-
-    /**
-     * UPDATE: Nhận vào thời gian trôi qua (deltaTime)
-     */
     public void update(long deltaTime) {
         if (currentState == null) return;
         if (finished && !currentState.loop) return;
@@ -49,7 +42,7 @@ public class AnimationManager {
         timer += deltaTime;
 
         if (timer >= currentState.speedMs) {
-            timer = 0; // Reset đồng hồ (hoặc timer -= speedMs để cực chuẩn xác)
+            timer = 0; // Reset đồng hồ 
             frameIndex++;
             
             if (frameIndex >= currentState.frames.size()) {
@@ -82,7 +75,6 @@ public class AnimationManager {
             this.timer = 0;
             this.finished = false;
         } else {
-            System.out.println("No animation config for: " + action);
         }
     }
     public BufferedImage getCurrentFrame() {
@@ -93,10 +85,6 @@ public class AnimationManager {
     public boolean isFinished() { return finished; }
     public String getCurrentAction() { return currentActionName; }
 
-    /**
-     * Clear animation references to help GC when an owning entity is disposed.
-     * Note: this does not evict shared image cache in ResourceManager.
-     */
     public void clear() {
         if (states != null) states.clear();
         currentState = null;

@@ -7,10 +7,7 @@ public class Coin extends Entity {
     private boolean isEarned = false;
 
     public Coin(float x, float y) {
-        // animation key: "coin"
         super(x, y, 32, 32, "coin");
-        
-        // stationary
         rb.setPhysicsParams(0, 0, 0);
     }
 

@@ -4,9 +4,8 @@ import core.Game;
 import core.GamePanel;
 import javax.swing.JFrame;
 
-public class main {
+class main {
     public static void main(String[] args) {
-        System.out.println("Game Starting...");
         Game game = new Game();
 
         GamePanel panel = new GamePanel(game);

@@ -1,4 +1,4 @@
-package utils; // Hoặc package nào bạn muốn
+package utils; 
 
 public enum GameState {
     PLAYING, MENU, QUIT;

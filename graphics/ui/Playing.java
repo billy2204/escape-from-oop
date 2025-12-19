@@ -4,8 +4,9 @@ package graphics.ui;
 import entities.Entity;
 import entities.characters.*;
 import entities.items.*;
-import input.KeyboardInput;
-import input.MouseInput;
+import input.IMovementInput;
+import input.IMenuInput;
+import input.IMouseInput;
 import core.*;
 import utils.GameState;
 
@@ -21,8 +22,9 @@ import java.util.Random;
 
 public class Playing {
 
-    private KeyboardInput input;
-    private MouseInput mouseInput;
+    private IMovementInput movementInput;
+    private IMouseInput mouseInput;
+    private IMenuInput menuInput;
     private MapManager mapManager;
     private CollisionManager collisionManager;
     private PhysicsSystem physicsSystem;
@@ -41,9 +43,10 @@ public class Playing {
     private GameWinOverlay gameWinOverlay;
     private String gameOver = "none"; // "none", "win", "lose"
 
-    public Playing(KeyboardInput input, MouseInput mouseInput) {
-        this.input = input;
+    public Playing(IMovementInput movementInput, IMouseInput mouseInput, IMenuInput menuInput) {
+        this.movementInput = movementInput;
         this.mouseInput = mouseInput;
+        this.menuInput = menuInput;
         this.gameOverOverlay = new GameOverOverlay();
         this.gameWinOverlay = new GameWinOverlay();
         
@@ -57,7 +60,7 @@ public class Playing {
         physicsSystem = new PhysicsSystem(collisionManager);
 
         entities = new ArrayList<>();
-        player = new Player(5, 100, input);
+        player = new Player(5, 100, movementInput);
 
         entities.add(new Chest(400, 300)); 
         entities.add(new Ghost(606, 17)); 
@@ -81,10 +84,11 @@ public class Playing {
     public void resetGame() {
         initClasses();
         setCountCoins(0);
+        gameOverOverlay.resetAudio();
+        gameWinOverlay.resetAudio();
     }
-/**
- * Remove an entity from the world. Safe to call during update (it will be queued).
- */
+//Remove an entity from the world. Safe to call during update (it will be queued).
+
     public void removeEntity(Entity e) {
         if (e == null) return;
         e.dispose();
@@ -96,15 +100,15 @@ public class Playing {
     }
 
     public void update(double deltaNs) {
-        if (gameOver == "lose") {
-            if (input.isReStart()) {
+        if ("lose".equals(gameOver)) {
+            if (menuInput != null && menuInput.isReStart()) {
                 setCountCoins(0);
                 resetGame();
             }
             return;
         }
-        else if (gameOver == "win") {
-            if (input.isEnterPressed()) {
+        else if ("win".equals(gameOver)) {
+            if (menuInput != null && menuInput.isEnterPressed()) {
                 GameState.state = GameState.MENU;
                 gameOver = "none";
                 resetGame();
@@ -114,15 +118,11 @@ public class Playing {
 
         long dt = (long) (deltaNs / 1_000_000);
 
-        if (input != null && input.isEscapePressed()) {
+        if (menuInput != null && menuInput.isEscapePressed()) {
             GameState.state = GameState.MENU;
             return;
         }
 
-        if (input != null && input.isToggleWallsPressed()) {
-            System.out.println("Playing: Toggle walls key pressed");
-            mapManager.toggleShowWalls();
-        }
 
         player.update(dt);
         for (Entity e : entities) {
@@ -155,24 +155,22 @@ public class Playing {
         }
 
         checkGameplayCollisions();
-        if (input == null) {
+        if (menuInput == null) {
             return;
         }
 
-        if (input.isStart()) {
+        if (menuInput.isStart()) {
             GameState.state = GameState.MENU;
-            System.out.println("Switching to Playing (Keyboard)...");
         }
     }
 
     private void checkGameplayCollisions() {
-        if (gameOver == "lose") return;
+        if ("lose".equals(gameOver)) return;
 
         Entity hitEntity = collisionManager.checkEntityCollision(player, entities);
         
         if (hitEntity != null) {
             if (hitEntity instanceof Enemy) {
-                System.out.println("PLAYER DIED!");
                 gameOver = "lose";
             }
             else if (hitEntity instanceof Chest) {
@@ -202,7 +200,6 @@ public class Playing {
                 Button button = (Button) hitEntity;
                 
                 if (!button.isPress()) {
-                    System.out.println("Button Pressed!");
                     button.press();
                     mapManager.removeWallAt(388,103,453,146);
                     for (Entity e : entities) {
@@ -220,7 +217,6 @@ public class Playing {
                         }
         }               
         if (collisionManager.checkExit(player.getCollider().getBounds()) && countCoins >= 6 && nanakoFollow && isOpenChest) {
-            System.out.println("VICTORY!"); 
             gameOver = "win"; // Bật cờ chiến thắng
         }
     }
@@ -254,28 +250,11 @@ public class Playing {
         g.drawString("Coin: "+ getCountCoins() + "/6" , 20, 30);
 
         mapManager.draw((java.awt.Graphics2D) g);
-        String wallsStatus = "Walls: " + (mapManager.isShowWalls() ? "ON" : "OFF") + "  (press T to toggle)";
-        g.setFont(new Font("Arial", Font.PLAIN, 12));
-        int textW = g.getFontMetrics().stringWidth(wallsStatus);
-        int pad = 6;
-        g.setColor(new Color(0, 0, 0, 150));
-        g.fillRect(18, 34, textW + pad, 20);
-        g.setColor(Color.WHITE);
-        g.drawString(wallsStatus, 20, 50);
 
-        if (mouseInput != null) {
-            String mousePos = "Mouse: " + mouseInput.getX() + ", " + mouseInput.getY();
-            int mw = g.getFontMetrics().stringWidth(mousePos);
-            g.setColor(new Color(0, 0, 0, 150));
-            g.fillRect(18, 54, mw + pad, 20);
-            g.setColor(Color.WHITE);
-            g.drawString(mousePos, 20, 70);
-        }
-
-        if (gameOver == "lose") {
+        if ("lose".equals(gameOver)) {
             gameOverOverlay.draw(g, width, height);
         }
-        else if (gameOver == "win") {
+        else if ("win".equals(gameOver)) {
             gameWinOverlay.draw(g, width, height);
         }
     }

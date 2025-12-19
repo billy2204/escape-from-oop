@@ -6,7 +6,6 @@ public class Nanako extends NonEnemy {
     private boolean follow = false;
     public Nanako(float x, float y) {
         super(x, y, 50, 70, "nanako");
-        // higher force/speed
         rb.setPhysicsParams(3.5f, 0.5f, 0.9f);
         setdDetectionRadius(100.0f);
     }

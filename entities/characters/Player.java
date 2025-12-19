@@ -1,14 +1,14 @@
 package entities.characters;
 
 import entities.Entity;
-import input.IInputHandler;
+import input.IMovementInput;
 import physics.Vector2D;
 
 public class Player extends Entity {
 
-    private IInputHandler input;
+    private IMovementInput input;
     private boolean moving = false;
-    public Player(float x, float y, IInputHandler input) {
+    public Player(float x, float y, IMovementInput input) {
         super(x, y, 48, 48, "player"); 
         this.input = input;
         rb.setPhysicsParams(5.0f, 1.0f, 0.8f);
@@ -23,10 +23,6 @@ public class Player extends Entity {
         if (input.isRight()) xDir = 1;
         if (input.isUp())    yDir = -1;
         if (input.isDown())  yDir = 1;
-        // mark moving implicitly via velocity; no manual flag needed
-        if (input.isPressed()) {
-            this.moving = true;
-        } 
         Vector2D direction = new Vector2D(xDir, yDir);
         
         if (direction.length() > 0) {
@@ -37,12 +33,12 @@ public class Player extends Entity {
             rb.applyFriction();
         }
 
-        // --- GỌI HÀM CỦA CHA (Code ngắn gọn hẳn) ---
         updateStandardAnimation(); 
-        
+        if (input.isPressed()) {
+            this.moving = true;
+        }
     }
 
-    // Return true if the player's rigidbody currently has non-zero velocity
-    public boolean isMoving() { return moving ;}
+    public boolean isMoving() { return moving ;} 
     
 }

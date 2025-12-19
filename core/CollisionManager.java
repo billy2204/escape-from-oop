@@ -21,10 +21,8 @@ public class CollisionManager {
         }
         return false;
     }
-    /**
-     * Kiểm tra một vùng (Rect) có bị kẹt vào TƯỜNG không.
-     * Dùng cho thuật toán di chuyển của Player và AI.
-     */
+    // Kiểm tra một vùng (Rect) có bị kẹt vào TƯỜNG không.
+    // Dùng cho thuật toán di chuyển của Player và AI.
     public boolean isSolid(Rectangle area) {
         List<Rectangle> walls = mapManager.getWalls();
         for (Rectangle wall : walls) {
@@ -35,9 +33,7 @@ public class CollisionManager {
         return false;
     }
     
-    /**
-     * Kiểm tra xem Player có đi vào CỔNG không
-     */
+    //Kiểm tra xem Player có đi vào CỔNG không
     public boolean checkGate(Rectangle area) {
         List<Rectangle> gates = mapManager.getGates();
         for (Rectangle gate : gates) {
@@ -48,11 +44,10 @@ public class CollisionManager {
         return false;
     }
 
-    /**
-     * Kiểm tra va chạm giữa Entity này với danh sách các Entity khác.
-     * Trả về Entity đầu tiên va chạm (hoặc null).
-     * Dùng cho: Player va chạm Enemy, Enemy tránh nhau (Separation Steering).
-     */
+
+    // Kiểm tra va chạm giữa Entity này với danh sách các Entity khác.
+    // Trả về Entity đầu tiên va chạm (hoặc null).
+    // Dùng cho: Player va chạm Enemy, Enemy tránh nhau (Separation Steering).
     public Entity checkEntityCollision(Entity source, List<Entity> others) {
         BoxCollider sourceBounds = source.getCollider();
         

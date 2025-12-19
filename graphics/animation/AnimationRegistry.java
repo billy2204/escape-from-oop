@@ -40,7 +40,6 @@ public class AnimationRegistry {
                 manager.addAction("run", "resources/characters/nanako/walk_right",200, true);
                 break;
             default:
-                System.err.println("No animation config for: " + type);
         }
     }
 }

@@ -3,26 +3,23 @@ package graphics.ui;
 import input.*;
 import utils.GameState;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 
-import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Color;
-import java.net.URL;
 
 public class Menu {
-    private KeyboardInput keyInput;
-    private MouseInput mouseInput;
+    private IMenuInput keyInput;
+    private IMouseInput mouseInput;
     private Image backgroundImage;
     private Image startButtonImage;
     private int startX, startY, startW, startH;
     private boolean prevLeftPressed = false;
-    private int lastWidth = 0, lastHeight = 0;
+    private int lastWidth = 0;
 
-    public Menu(KeyboardInput keyInput, MouseInput mouseInput) {
+    public Menu(IMenuInput keyInput, IMouseInput mouseInput) {
         this.keyInput = keyInput;
         this.mouseInput = mouseInput;
 
@@ -37,17 +34,15 @@ public class Menu {
 
         if (keyInput.isStart()) {
             GameState.state = GameState.PLAYING;
-            System.out.println("Switching to Playing (Keyboard)...");
         }
 
         if (mouseInput != null && startButtonImage != null && lastWidth > 0 && startW > 0 && startH > 0) {
-            boolean pressed = mouseInput.leftPressed;
+            boolean pressed = mouseInput.isLeftPressed();
             if (pressed && !prevLeftPressed) {
-                int mx = mouseInput.x;
-                int my = mouseInput.y;
+                int mx = mouseInput.getX();
+                int my = mouseInput.getY();
                     if (mx >= startX && mx <= startX + startW && my >= startY && my <= startY + startH) {
                     GameState.state = GameState.PLAYING;
-                    System.out.println("Switching to Playing (Mouse Click)...");
                 }
             }
             prevLeftPressed = pressed;
@@ -75,7 +70,6 @@ public class Menu {
                 g.drawImage(startButtonImage, startX, startY, startW, startH, null);
 
                 lastWidth = width;
-                lastHeight = height;
             }
         } else {
             g.setColor(Color.RED);
@@ -96,7 +90,6 @@ public class Menu {
             File f = new File(path);
             if (f.exists()) {
                 backgroundImage = new ImageIcon(f.getAbsolutePath()).getImage();
-                System.out.println("Loaded menu background: " + f.getAbsolutePath());
             }
         } catch (Exception ignored) { }
     }
@@ -107,9 +100,7 @@ public class Menu {
         if (f.exists() && !f.isDirectory()) {
             try {
                 startButtonImage = new ImageIcon(f.getAbsolutePath()).getImage();
-                    System.out.println("Load Start Button Image" + path);
             } catch (Exception e) {
-                System.err.println("Load Start Button Failed: " + e.getMessage());
                 startButtonImage = null;
             }
         }

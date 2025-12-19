@@ -35,7 +35,6 @@ public class ResourceManager {
                 }
             }
         } else {
-            System.err.println("Folder not found: " + folderPath);
         }
 
         cache.put(folderPath, frames);

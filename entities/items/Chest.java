@@ -7,10 +7,7 @@ public class Chest extends Entity {
     private boolean isOpen = false;
     private boolean price = false;
     public Chest(float x, float y) {
-        // animation key: "chest"
         super(x, y, 32, 32, "chest");
-        
-        // stationary
         rb.setPhysicsParams(0, 0, 0);
     }
 
@@ -29,7 +26,6 @@ public class Chest extends Entity {
     public void collect() {
         if (!isOpen) {
             isOpen = true;
-            System.out.println("Chest opened!"); 
         }
     }
     

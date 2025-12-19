@@ -4,10 +4,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class MouseInput implements MouseListener, MouseMotionListener {
+public class MouseInput implements MouseListener, MouseMotionListener, IMouseInput {
 
-    public int x, y; // Tọa độ chuột
-    public boolean leftPressed, rightPressed;
+    private int x, y; // Tọa độ chuột
+    private boolean leftPressed, rightPressed;
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -36,10 +36,12 @@ public class MouseInput implements MouseListener, MouseMotionListener {
     @Override public void mouseClicked(MouseEvent e) {}
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
-    public int getX() {
-        return x;
-    }
-    public int getY() {
-        return y;
-    }
+    @Override
+    public int getX() { return x; }
+    @Override
+    public int getY() { return y; }
+    @Override
+    public boolean isLeftPressed() { return leftPressed; }
+    @Override
+    public boolean isRightPressed() { return rightPressed; }
 }

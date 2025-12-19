@@ -4,7 +4,6 @@ import graphics.ui.Menu;
 import graphics.ui.Playing;
 import utils.GameState;
 import java.awt.Graphics;
-import java.awt.Color;
 import input.*;
 
 public class Game {
@@ -22,7 +21,7 @@ public class Game {
         keyInput = new input.KeyboardInput();
         mouseInput = new input.MouseInput();
         menu = new Menu(keyInput, mouseInput);
-        playing = new Playing(keyInput, mouseInput);
+        playing = new Playing(keyInput, mouseInput, keyInput);
     }
 
     public KeyboardInput getKeyInput() { return keyInput; }
@@ -49,6 +48,8 @@ public class Game {
                 break;
             case PLAYING:
                 if (playing != null) playing.draw(g, width, height);
+                break;
+            case QUIT:
                 break;
         }
 

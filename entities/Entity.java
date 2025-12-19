@@ -73,7 +73,7 @@ public abstract class Entity {
     protected void setAnimation(String name) {
         if (anim == null) return;
         if (!anim.hasAction(name)) {
-            System.out.println("No animation config for: " + name + " (entity type: " + type + ")");
+            return;
         }
         anim.play(name);
     }
